@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include<ncurses.h>
+
 struct node
 {
     std::string data;
