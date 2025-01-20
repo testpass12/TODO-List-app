@@ -25,11 +25,13 @@ int displaydashboard(node *head)
     node *temp = head->next;
     while (temp != nullptr)
     {
-        if(!temp->flag){
-            std::cout << i << ":" << temp->data << "\t Pending" << std::endl;    
+        if (!temp->flag)
+        {
+            std::cout << i << ":" << temp->data << "\t Pending" << std::endl;
         }
-        else{
-            std::cout << i << ":" << temp->data << "\t Completed"<< std::endl;
+        else
+        {
+            std::cout << i << ":" << temp->data << "\t Completed" << std::endl;
         }
         temp = temp->next;
         i++;
@@ -37,11 +39,8 @@ int displaydashboard(node *head)
     std::cout << "***************" << std::endl;
     return i;
 }
-void createtask(node *head)
+void createtask(node *head, std::string task)
 {
-    std::string task;
-    std::cout << "Enter the Task:";
-    std::cin >> task;
     node *add = new node(task);
     node *temp = head;
     while (temp->next != nullptr)
@@ -61,28 +60,34 @@ void removetask(node *head, int index)
     temp->next = trash->next;
     delete (trash);
 }
-void mark(node *head,int size){
+void mark(node *head, int size)
+{
     node *temp = head->next;
-    for(int i = 0;i<size;i++){
+    for (int i = 0; i < size; i++)
+    {
         temp = temp->next;
     }
-    if(temp->flag)temp->flag = false;
-    else temp->flag = true;
+    if (temp->flag)
+        temp->flag = false;
+    else
+        temp->flag = true;
 }
-void deletell(node *head){
-    if(head == nullptr){
+void deletell(node *head)
+{
+    if (head == nullptr)
+    {
         return;
     }
     deletell(head->next);
-    delete(head);
+    delete (head);
 }
 int main()
 {
-    int size = 0,i;
+    int size = 0, i;
     node *head = new node("");
     std::string options = "1.Create the Task\n"
                           "2.Mark the Complete Task\n"
-                          "3.Remove Complete task\n"
+                          "3.Remove task\n"
                           "4.Exit";
     int ch;
     while (true)
@@ -92,31 +97,54 @@ int main()
         std::cout << options << std::endl;
         std::cout << "Select the option:";
         std::cin >> ch;
-        if(ch == 1){
-                createtask(head);
-        }
-        else if(ch == 2){
-                std::cout << "Enter the Num of task:";
-                std::cin >> i;
-                if(i > size){
-                    std::cout << "Invalid task num" << std::endl;
-                    break;
+        if (ch == 1)
+        {
+            if (size == 10)
+            {
+                std::cout << "Task Limit is full" << std::endl;
+            }
+            else
+            {
+                std::string task;
+                std::cout << "Enter the Task:";
+                std::getline(std::cin.ignore(), task);
+                if (task.length() > 15)
+                {
+                    std::cout << "Too Large to load task" << std::endl;
                 }
-                mark(head,i);}
-        else if(ch == 3){
-                std::cout << "Enter the Num of task:";
-                std::cin >> i;
-                if(i > size){
-                    std::cout << "Invalid task num" << std::endl;
-                    break;
-                }
-                removetask(head, i);
+                else
+                    createtask(head, task);
+            }
         }
-        else if(ch == 4){
-                std::cout << "Exited" << std::endl;
+        else if (ch == 2)
+        {
+            std::cout << "Enter the Num of task:";
+            std::cin >> i;
+            if (i > size)
+            {
+                std::cout << "Invalid task num" << std::endl;
                 break;
+            }
+            mark(head, i);
         }
-        else std::cout << "Invalid Option" << std::endl;
+        else if (ch == 3)
+        {
+            std::cout << "Enter the Num of task:";
+            std::cin >> i;
+            if (i > size)
+            {
+                std::cout << "Invalid task num" << std::endl;
+                break;
+            }
+            removetask(head, i);
+        }
+        else if (ch == 4)
+        {
+            std::cout << "Exited" << std::endl;
+            break;
+        }
+        else
+            std::cout << "Invalid Option" << std::endl;
         sleep(1);
     }
     deletell(head);
